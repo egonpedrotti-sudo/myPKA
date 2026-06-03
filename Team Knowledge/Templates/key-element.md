@@ -1,7 +1,8 @@
 ---
 name: Work
 description_short: My professional life and the businesses I run
-status: active
+status: active                    # active | dormant | archived (archived = a domain that has left your life)
+promoted_from:                    # optional - Topic slug this Key Element graduated from (reverse of Topic.promoted_to)
 tags:
   - life
 ---

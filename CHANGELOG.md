@@ -2,6 +2,28 @@
 
 All notable changes to the myPKA scaffold are tracked here. Versions follow semver: MAJOR for breaking structural changes, MINOR for additions, PATCH for fixes.
 
+## [2.3.0] - 2026-06-03
+
+**Aligns the "My Life" doctrine with the canonical ICOR / "PKM like a Pro" model.** The scaffold previously framed My Life as five peer buckets (Topics, Habits, Goals, Projects, Key Elements). It is now corrected to **four buckets — Key Elements, Projects, Habits, Topics — plus Goals as the operating layer**, with the relational laws the framework actually runs on made explicit and the schema updated to encode them. Adds the canonical teaching examples (a "lose 20 kg → Health" Goal carried by a Project or Habit; a "French" Topic that graduates into a Key Element) so any LLM reading the scaffold grasps the rules. Additive to the schema; one rule (Goal anchor) becomes required — see Migration.
+
+### Changed
+
+- **`PKM/My Life/README.md`, `INDEX.md`, and all six bucket `INDEX.md`s** — rewritten from "five buckets/shapes" to "four buckets + the Goals operating layer." State the **anchoring law** (every Goal anchors to exactly one Key Element — never a Project, never a Topic), the **carrier rule** (a Goal is achieved through exactly one of two sibling shapes — a Project OR a Habit; no third), **Topic → Key Element promotion** (and the reverse: a Key Element that leaves your life is archived), and the **filter test** (content fitting none of the four buckets doesn't belong in the PKM). Projects and Habits are reframed as *thinking spaces, not trackers*.
+- **`Team Knowledge/Guidelines/GL-002-frontmatter-conventions.md`** — encodes the doctrine: Goal `key_element` is now **required and Key-Element-only**; the Project-or-Habit carrier rule is documented; new optional fields land for the promotion pipeline.
+- **`Team Knowledge/Workstreams/WS-001-daily-journaling.md`** — Step-4 routing now enforces the anchor + single-carrier rules, runs the filter test before stubbing a My Life note, and proposes Topic → Key Element promotion when a Topic becomes a measurable pursuit.
+- **`AGENTS.md`** (root) and **`Team/Penn - Journal Writer/AGENTS.md`** — taxonomy + routing map corrected to four-buckets-plus-Goals-layer, pointing to GL-002 for the relational doctrine.
+
+### Added
+
+- **`promoted_to` + `lifecycle`** (exploring | promoted | dormant) optional fields on **Topic** — encode the Topic → Key Element promotion pipeline.
+- **`promoted_from` + an `archived` status** on **Key Element** — the reverse pointer and the "left my life" state.
+- **`linked_goals`** on **Habit**, and a documented **`linked_topics`** on **Project** — the carrier and context relations.
+- Canonical illustrative examples woven into GL-002, the templates, and the My Life docs (the "lose 20 kg → Health" Goal and the "French" Topic-to-Key-Element promotion).
+
+### Migration
+
+- Existing vaults: every **Goal** note now requires a `key_element` field pointing to a Key Element (never a Project or Topic). Add the anchor to any Goal that lacks one. All other changes are additive optional fields — no action required.
+
 ## [2.2.0] - 2026-05-26
 
 **Adds the one-way Task → Resource linking rule and its `linked_deliverables` slot.** A task now carries seven `linked_*` arrays in its frontmatter — the new `linked_deliverables` joins `linked_sops`, `linked_workstreams`, `linked_guidelines`, `linked_my_life`, `linked_session_logs`, `linked_journal_entries` — and the task is the one place that records which deliverable folder a workflow owns. When a task closes (done or cancelled), every deliverable in its `linked_deliverables` cascades into `Deliverables/_archive/<YYYY>/<MM>/`. Resources (deliverables, journal entries, session logs, SOPs, Workstreams, Guidelines, My Life entries) never carry a back-pointer to a task — the link is one-way. Additive, non-breaking; existing tasks need a one-line frontmatter addition (see Migration).

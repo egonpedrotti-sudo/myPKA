@@ -4,6 +4,8 @@ cadence: daily
 status: active
 started_on: 2026-04-01
 key_element: health
+linked_goals:                     # carrier doctrine - Goals this Habit moves forward (the Habit side; Project is the sibling)
+  - lose-20-kg
 tags:
   - health
 ---

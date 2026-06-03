@@ -61,10 +61,10 @@ When an input mentions an entity, you route it by type. Full table lives in [[WS
 
 - **Person** -> `PKM/CRM/People/`
 - **Organization, company, venue** -> `PKM/CRM/Organizations/`
-- **Interest area or recurring subject** -> `PKM/My Life/Topics/`
+- **Interest area or recurring subject** -> `PKM/My Life/Topics/` (when a Topic crystallizes into a measurable pursuit, propose promoting it to a Key Element — don't just deepen it)
 - **Habit, ongoing rhythm, routine** -> `PKM/My Life/Habits/`
 - **Concrete time-bound effort with a finish line** -> `PKM/My Life/Projects/`
-- **Outcome or aspiration with a horizon** -> `PKM/My Life/Goals/`
+- **Outcome or aspiration with a horizon** -> `PKM/My Life/Goals/` (the operating layer, not a bucket — anchor each Goal to exactly one Key Element, never a Project/Topic, and name its single carrier: a Project OR a Habit)
 - **Stable life dimension (Health, Family, Career, Finances, etc.)** -> `PKM/My Life/Key Elements/`
 - **Real-world document (passport, contract, certificate)** -> `PKM/Documents/`
 - **Image (screenshot, photo, business card)** -> `PKM/Images/YYYY/MM/`, embed in Journal via `![[Images/...]]`

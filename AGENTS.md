@@ -69,7 +69,7 @@ See [[Team/agent-index]] for the full routing table.
   - `Guidelines/` - static reference info (naming, tone, defaults).
   - `session-logs/YYYY/MM/` - append-only record of every session.
 - `PKM/` - the user's personal knowledge. See [[PKM/INDEX]].
-  - `My Life/` - Topics, Habits, Goals, Projects, Key Elements.
+  - `My Life/` - the four buckets (Key Elements, Projects, Habits, Topics) plus the Goals operating layer. Every Goal anchors to a Key Element (never a Project/Topic); see [[GL-002-frontmatter-conventions]] for the anchoring + carrier + Topic-promotion rules.
   - `Documents/` - passport, contracts, identity files.
   - `CRM/People/` and `CRM/Organizations/`.
   - `Images/YYYY/MM/` - single shared image bucket.
@@ -212,7 +212,7 @@ When you (or any specialist you delegate to) create a new note in any of these e
 
 You MUST start from the corresponding template in `Team Knowledge/Templates/`. Free-form-text-fields-in-body — the old `**Field:** value` shape — is no longer acceptable. Structured data lives in YAML frontmatter; narrative lives in the body.
 
-The canonical field schemas per entity type are defined in [[GL-002-frontmatter-conventions]]. Field names, typing rules, required vs. optional fields, foreign-key conventions — all live there. If a field you need is not in GL-002, edit the Guideline first, then use the field. Do not invent ad-hoc keys.
+The canonical field schemas per entity type are defined in [[GL-002-frontmatter-conventions]]. Field names, typing rules, required vs. optional fields, foreign-key conventions — all live there. If a field you need is not in GL-002, edit the Guideline first, then use the field. Do not invent ad-hoc keys. For the **My Life** entities, GL-002 also carries the relational doctrine — the Goal→Key-Element anchoring law (a Goal anchors to a Key Element, never a Project/Topic), the Project-or-Habit carrier rule, and Topic→Key-Element promotion.
 
 Larry refuses to file a note when the entity's required field (per GL-002 §5) is missing. Optional fields can be left blank or deleted. The `_template.md` files ship every optional field pre-listed so you can fill what you have and remove what you don't.
 
