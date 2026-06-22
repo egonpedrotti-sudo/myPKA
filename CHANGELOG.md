@@ -2,6 +2,21 @@
 
 All notable changes to the myPKA scaffold are tracked here. Versions follow semver: MAJOR for breaking structural changes, MINOR for additions, PATCH for fixes.
 
+## [4.1.0] - 2026-06-23
+
+**The Graphite Cockpit.** The bundled myPKA Cockpit gets a full visual redesign. Its default dark theme moves from a warm charcoal to a cool, near-black **Graphite** canvas, with a cool near-white text ramp and **brass retained as the single signature accent**. The result is a calmer, more precise instrument that keeps the one colour that points (brass) while adopting a quieter, more neutral field around it.
+
+This is a visual-only release: there are no structural changes to the scaffold, no changes to your PKM, journals, tasks, or any of your own content, and nothing new to learn. If you run the Cockpit, the next time you build it you will see the new look.
+
+### Changed
+
+- **Bundled Cockpit redesigned to the "Graphite" dark theme** (`Expansions/mypka-cockpit/`, cockpit version `1.1.0` -> `1.2.0`). A pure CSS reskin: a design-token retune (`web/src/index.css`) plus chrome refinements (`web/src/cockpit.css`). No behavior, data, API, or schema changes; no new dependencies. The Cockpit web bundle is built at install time, so the new theme appears on your next Cockpit build.
+- **Version mirrors bumped to `4.1.0`** (`manifest.json` is authoritative; `VERSION` and `.scaffold-version` mirror it). The bundled Cockpit's `expansion_yaml_version` in `manifest.json` is updated to `1.2.0` to match.
+
+### Notes
+
+- The Cockpit is a runtime Expansion and is updated on its own version, separate from the scaffold version. The scaffold self-updater never overwrites Cockpit code; it defers to the Cockpit's own update path. This release simply ships the newer Cockpit inside the scaffold download.
+
 ## [4.0.0] - 2026-06-22
 
 **The self-updating, model-agnostic, self-improving release.** myPKA stops being a folder you manually re-sync and becomes a product that can update itself. The line between the framework (ours, upgradable) and your own state (yours, sacred) is now written down as machine-readable data, so an update can confidently overwrite our files while never touching yours. One command (or one sentence to your assistant) shows you exactly what will change before anything happens, and the scaffold tells you on boot when a new version exists.
