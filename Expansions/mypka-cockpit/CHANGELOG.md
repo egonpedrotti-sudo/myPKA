@@ -7,6 +7,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 The version in `expansion.yaml` is the single source of truth for a release; the
 root `package.json` and `package-lock.json` mirror it.
 
+## [3.0.1] - 2026-06-22
+
+### Fixed
+
+- **Fleeting-note + journal capture no longer fails for non-Latin titles.**
+  `slugifyTitle()` is ASCII-only, so a non-empty title made entirely of non-Latin
+  script (Korean / Chinese / Japanese / Cyrillic / Greek / Arabic / Hebrew / Thai),
+  emoji, or punctuation slugified to an empty string — and `createWorkbenchDoc()`
+  (Fleeting Notes) and `createJournalEntry()` (Journal composer) then rejected the
+  capture with `bad-title` (HTTP 400). Capture was blocked purely on the title's
+  character set. Both create paths now fall back to a safe generated slug that
+  passes the slug whitelist and the containment jail — `fleeting-<YYYY-MM-DD-HHMMSS>`
+  for a fleeting note, `<date>-entry` for a journal entry — instead of refusing.
+- **The human title is preserved when the slug falls back.** A fleeting note
+  prepends the original title as an H1 (so it survives in the note body and is
+  recovered as the note's title); a journal entry already records it in the
+  `title:` frontmatter field. So a note titled `한글 메모` keeps `한글 메모` even
+  though its filename slug is the generated form.
+- **All security guards are unchanged.** A path-like title (`/`, `\`, NUL, `..`)
+  is still refused with `bad-title` — a path is never a real title and never falls
+  back. Reserved names, collision (no silent overwrite), the slug whitelist, and
+  realpath containment are all intact; the generated fallback slug itself passes
+  every check. ASCII behavior is identical (`c` → `c`, `Test Note` → `test-note`,
+  `café` → `cafe`). Covered by `server/workbench.slug.test.mjs`.
+
 ## [1.0.0] - 2026-06-17
 
 First public **standalone** release of the myPKA Cockpit as a community-

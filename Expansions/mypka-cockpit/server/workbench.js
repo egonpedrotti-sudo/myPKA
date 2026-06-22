@@ -191,6 +191,19 @@ export function slugifyTitle(title) {
   return slug;
 }
 
+// --- fallback-slug timestamp ------------------------------------------------
+// Compact local timestamp YYYY-MM-DD-HHMMSS for a generated fallback slug
+// (e.g. `fleeting-2026-06-22-130145`). Used ONLY when slugifyTitle() yields ''
+// for a legitimate non-Latin/emoji/punctuation-only title, so capture is never
+// blocked on the title's character set. The form is all-[a-z0-9-] and starts
+// with "fleeting-", so it ALWAYS satisfies SLUG_RE and the containment jail.
+function fileTimestamp() {
+  const d = new Date();
+  const p = (n) => String(n).padStart(2, '0');
+  return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}-` +
+         `${p(d.getHours())}${p(d.getMinutes())}${p(d.getSeconds())}`;
+}
+
 // --- audit log (Vex X-3) ----------------------------------------------------
 // Append ONE record per successful write to a cockpit-local, month-bucketed
 // audit log. Mirrors social.js's decision-queue pattern (one JSON line/record,
@@ -396,12 +409,54 @@ export function createWorkbenchDoc(title, markdown = '') {
     return { ok: 'bad-title' };
   }
 
-  const slug = slugifyTitle(title);
-  if (!slug || !SLUG_RE.test(slug)) return { ok: 'bad-title' };
+  // Slugify. For an otherwise-legitimate non-empty title whose every character
+  // is non-Latin (Korean/Chinese/Cyrillic/…), emoji, or punctuation, slugifyTitle
+  // returns '' — historically this rejected the note (400 bad-title) and BLOCKED
+  // CAPTURE purely on the title's character set. We no longer reject: we fall back
+  // to a safe, SLUG_RE-passing, collision-resistant generated slug and PRESERVE the
+  // human title in the note body (an H1 is prepended below) so e.g. "한글 메모"
+  // survives even when its filename slug is the generated form. The path-traversal
+  // guard ABOVE still rejects — a path is not a real title, so it never reaches here.
+  let slug = slugifyTitle(title);
+  let usedFallbackSlug = false;
+  if (!slug) {
+    // Title is non-empty (an empty/whitespace title yields no glyphs to preserve,
+    // but is still a legitimate "untitled" capture). Generate fleeting-<stamp>.
+    slug = `fleeting-${fileTimestamp()}`;
+    usedFallbackSlug = true;
+  }
+  if (!SLUG_RE.test(slug)) return { ok: 'bad-title' }; // defensive; generator is in-charset
   if (RESERVED_SLUGS.has(slug)) return { ok: 'reserved' };
 
-  const body = typeof markdown === 'string' ? markdown : '';
+  let body = typeof markdown === 'string' ? markdown : '';
+  // TITLE PRESERVATION: when the filename slug is the generated fallback, the
+  // original human title would otherwise be LOST (it only ever became the
+  // filename). Prepend it as an H1 so deriveTitle() recovers it and the returned
+  // `title` is the human string, not the slug. Only when (a) we fell back AND (b)
+  // there is a real title string AND (c) the body doesn't already lead with it.
+  if (usedFallbackSlug) {
+    const humanTitle = typeof title === 'string' ? title.trim() : '';
+    if (humanTitle) {
+      const existingFirstLine = body.split(/\r?\n/).find((l) => l.trim()) || '';
+      if (existingFirstLine.trim() !== `# ${humanTitle}` && existingFirstLine.trim() !== humanTitle) {
+        body = body === '' ? `# ${humanTitle}\n` : `# ${humanTitle}\n\n${body}`;
+      }
+    }
+  }
   if (Buffer.byteLength(body, 'utf8') > MAX_CONTENT_BYTES) return { ok: 'too-large' };
+
+  // For a GENERATED fallback slug only, a same-second collision (two untitled/
+  // non-Latin captures in the same second) must NOT block capture — uniquify with
+  // a short random suffix (bounded retries). The no-silent-overwrite guard for
+  // REAL user titles below is untouched: a human-titled collision still 409s.
+  if (usedFallbackSlug) {
+    let candidate = slug;
+    for (let attempt = 0; attempt < 8; attempt++) {
+      const cAbs = containedWorkbenchPath(candidate);
+      if (cAbs && !fs.existsSync(cAbs)) { slug = candidate; break; }
+      candidate = `${slug}-${crypto.randomBytes(2).toString('hex')}`.slice(0, 80).replace(/-+$/, '');
+    }
+  }
 
   // containedWorkbenchPath whitelists the slug AND rejects symlink-escape; for a
   // brand-new doc the file won't exist yet, so it returns the lexical in-jail abs.

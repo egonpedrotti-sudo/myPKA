@@ -170,8 +170,17 @@ export function createJournalEntry(title, body = '', dateInput) {
   }
   if (!isValidCalendarDate(date)) return { ok: 'bad-date' };
 
-  const baseSlug = slugifyTitle(cleanTitle);
-  if (!baseSlug || !SLUG_RE.test(baseSlug)) return { ok: 'bad-title' };
+  // Slugify the title for the filename's descriptive half. A non-empty title made
+  // entirely of non-Latin script (Korean/Chinese/Cyrillic/…), emoji, or punctuation
+  // slugifies to '' — historically this REJECTED the entry (400 bad-title), blocking
+  // capture purely on the title's character set. We no longer reject: we fall back
+  // to a fixed "entry" marker. The HUMAN TITLE is NOT lost — buildEntryMarkdown()
+  // writes it verbatim into the `title:` frontmatter field below, so e.g. "한글 메모"
+  // survives in the note even when the filename slug is "<date>-entry". The
+  // path-traversal guard ABOVE still rejects path-like titles — they never reach here.
+  let baseSlug = slugifyTitle(cleanTitle);
+  if (!baseSlug) baseSlug = 'entry';
+  if (!SLUG_RE.test(baseSlug)) return { ok: 'bad-title' }; // defensive; "entry" is in-charset
 
   const bodyStr = typeof body === 'string' ? body : '';
   if (Buffer.byteLength(bodyStr, 'utf8') > MAX_BODY_BYTES) return { ok: 'too-large' };

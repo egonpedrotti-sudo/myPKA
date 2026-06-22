@@ -2,6 +2,39 @@
 
 All notable changes to the myPKA scaffold are tracked here. Versions follow semver: MAJOR for breaking structural changes, MINOR for additions, PATCH for fixes.
 
+## [3.0.1] - 2026-06-22
+
+**Hotfix: the Cockpit can now create Fleeting Notes and Journal entries for non-Latin / emoji / punctuation-only titles.** Cockpit-only fix — no scaffold-wide structural change. Two server files change; nothing else in the scaffold is touched.
+
+### Fixed
+
+- **The bug.** In the myPKA Cockpit, creating a **Fleeting Note** or a **Journal entry** failed with the error **`title produced an empty slug`** (HTTP 400) whenever the title was made entirely of **non-Latin script** (Korean / Chinese / Japanese / Cyrillic / Greek / Arabic / Hebrew / Thai / etc.), **emoji**, or **punctuation only**. The Cockpit derives the note's filename from the title by slugifying it, and the slugifier is ASCII-only — so a title like `한글 메모`, `中文笔记`, `🎉🎉`, or `!!!` slugified to an empty string and the capture was rejected purely on the title's character set.
+- **The fix.** When a title slugifies to empty, the Cockpit now **falls back to a safe generated slug** instead of refusing the capture: `fleeting-<YYYY-MM-DD-HHMMSS>` for a Fleeting Note and `<date>-entry` for a Journal entry. The **original title is preserved in the note** — a Fleeting Note prepends it as an H1 (so it is recovered as the note's title), and a Journal entry records it verbatim in the `title:` frontmatter field. ASCII titles are unchanged (`Test Note` → `test-note`, `café` → `cafe`). All security guards are intact: a path-like title (`..`, `/`, `\`, NUL) is still refused, reserved names are still reserved, and there is still no silent overwrite.
+
+### Files changed (exactly two)
+
+- `Expansions/mypka-cockpit/server/workbench.js` — Fleeting Notes create path (`fleeting-<timestamp>` fallback + H1 title preservation).
+- `Expansions/mypka-cockpit/server/journalEntries.js` — Journal create path (`<date>-entry` fallback; title preserved in `title:` frontmatter).
+
+A regression test (`Expansions/mypka-cockpit/server/workbench.slug.test.mjs`) and the Cockpit's own `Expansions/mypka-cockpit/CHANGELOG.md` accompany the fix.
+
+### How to pull this into an existing install
+
+This is a **Cockpit-only** fix. If you already run the Cockpit and only want this fix, you do **not** need to re-download the whole scaffold:
+
+1. Replace these two files with the v3.0.1 versions (or apply the slug-fallback change to each):
+   - `Expansions/mypka-cockpit/server/workbench.js`
+   - `Expansions/mypka-cockpit/server/journalEntries.js`
+2. **Restart the Cockpit** (stop the local server and start it again) so the new server code loads.
+
+No `mypka.db` regeneration, no team change, and no other scaffold edits are required. Existing notes are unaffected.
+
+### Version files
+
+- `VERSION` → `3.0.1` (was `3.0.0`)
+- `.scaffold-version` → `3.0.1` (was `3.0.0`)
+- `Expansions/mypka-cockpit/expansion.yaml` → `1.0.1` (was `1.0.0`)
+
 ## [3.0.0] - 2026-06-21
 
 **The all-in-one bundle: base scaffold 2.4.0 + myPKA Cockpit + App Developer Pack + Designer Pack, all preinstalled.** This is the max-capability download for new users — a single folder that ships the full base scaffold plus the local Cockpit viewer and a 12-specialist team out of the box, with no install step required. The à-la-carte packs (Cockpit, App Developer, Designer) remain published separately as the upgrade path for existing scaffolds; both distribution shapes coexist. The major bump reflects that the default download's team roster, SOP/Guideline set, and `Expansions/` contents all change shape — adopters of the base 2.4.0 are unaffected (this is a new bundle SKU, not a forced migration).
