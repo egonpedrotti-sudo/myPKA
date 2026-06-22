@@ -2,6 +2,37 @@
 
 All notable changes to the myPKA scaffold are tracked here. Versions follow semver: MAJOR for breaking structural changes, MINOR for additions, PATCH for fixes.
 
+## [4.0.0] - 2026-06-22
+
+**The self-updating, model-agnostic, self-improving release.** myPKA stops being a folder you manually re-sync and becomes a product that can update itself. The line between the framework (ours, upgradable) and your own state (yours, sacred) is now written down as machine-readable data, so an update can confidently overwrite our files while never touching yours. One command (or one sentence to your assistant) shows you exactly what will change before anything happens, and the scaffold tells you on boot when a new version exists.
+
+> **BREAKING.** This is the first myPKA release that is not purely additive. It introduces a real framework/user-state seam. Members on 3.1.0 take a one-time bridged update that lays down `manifest.json` and the `.mypka/` control folder. The bridge is numbered, idempotent, and auditable: see the `3.1.0 -> 4.0.0` recipe in `CHANGELOG-MIGRATION.md`. Your own content (PKM, journals, tasks, session logs, Expansions, secrets, databases) is never moved or modified by the bridge.
+
+### Added
+
+- **A machine-readable `manifest.json` at the scaffold root: the new version SSOT and the framework/user-state seam as data.** It declares `scaffold_version` (now authoritative), `framework_paths` (the allow-list of files the updater MAY overwrite), and `user_state_paths` (the sacred list the updater will NEVER write). Every fact about "what is ours vs. what is yours" now lives in one inspectable file instead of in tribal knowledge.
+- **A one-command updater: `/update-scaffold` (and the portable trigger "update myPKA"), backed by a plain script `scripts/update-scaffold.py`.** The script is python3 stdlib only (no pip, no npm) so it runs without an LLM. It diffs only `framework_paths`, prints a plain-English plan ("3 new SOPs, 1 changed guideline, 0 of your files touched"), is **dry-run by default**, applies only on `--apply`, **backs up any locally modified framework file to `.mypka/backups/<timestamp>/` before overwriting** (never a silent overwrite of your edit), refuses to write outside `framework_paths`, and is fully offline-safe and fail-closed.
+- **A boot-time update notification: `scripts/check-version.py`.** Announced-on by default (Tom's decision). It is the only network reach in the update core: it fetches a single version string over HTTPS, read-only, **sends no data about you or your vault**, fails silently offline, and prints one line only when a newer version exists. It never downloads or applies anything. Disclosed in the script header and in `manifest.json` under `update_check`; turn it off with `update_check.enabled: false`.
+- **A separable cockpit-code update path.** The Cockpit (and every Expansion) is versioned on its own `expansion.yaml` SemVer, not on the scaffold version. The scaffold updater detects a behind cockpit and **defers** to the cockpit's own updater instead of touching Expansion code. The cockpit updater lifecycle is specified in `Expansions/mypka-cockpit/scripts/UPDATE-COCKPIT.md` (marked clearly as a SPEC: the working updater plus versioned DB migrations are still to be built and security-reviewed before they ship).
+- **The new `model:` frontmatter field** (Silas is adding it to `GL-002` in parallel). This records which model an agent contract was authored/validated against, supporting the LLM-agnostic posture below. Reference `GL-002` for the field's authoritative definition.
+- **The LLM-agnostic portable-core / adapter rule, plus an agnosticism audit** (Nolan and Silas are adding the Guideline and the audit Workstream in parallel). The portable core is the model-neutral contract; the adapter layer (for example `ADAPTER-PROMPT.md` and the `.claude/` shims) is where a specific host binds. Reference the new Guideline and the audit once landed.
+- **The Team Retro self-improvement Workstream** (Nolan is adding it in parallel): a recurring, structured retro that lets the team improve its own operating knowledge over time. Reference the new `WS` once landed.
+- **The `.mypka/` control folder.** A small hidden folder the updater creates on first run, holding `backups/`, an `update-log.txt`, and a copy of the active manifest. It is user-state: never overwritten by an update.
+
+### Changed
+
+- **`VERSION` and `.scaffold-version` are now mirrors, not the source of truth.** They still exist for back-compat with older tooling and both now read `4.0.0`, but `manifest.json` is authoritative. If they ever disagree, `manifest.json` wins (documented in the manifest's `version_files` block).
+
+### Why this is a major version
+
+Until now an update meant "re-download the folder and hope you remembered which files you changed." That works while the folder is purely additive. It breaks the moment we need to ship a changed framework file safely. v4.0.0 draws the framework/user-state boundary explicitly and in data, so the updater can act on it without guessing. That boundary is the breaking change, and it is the foundation every later self-update builds on. The Hermes-Agent lesson applies: separate the engine directory from the state directory, and never write user data into the engine.
+
+### Version files
+
+- `manifest.json` → new; `scaffold_version` `4.0.0`, authoritative SSOT.
+- `VERSION` → `4.0.0` (was `3.1.0`; now a mirror of the manifest).
+- `.scaffold-version` → `4.0.0` (was `3.1.0`; now a mirror of the manifest).
+
 ## [3.1.0] - 2026-06-22
 
 **The Cockpit gets a "My AI Team" section: browse your team, session log, and governance docs (Workstreams / SOPs / Guidelines) right inside the local viewer.** This is a Cockpit-feature release — the base scaffold structure is unchanged. It also folds in the v3.0.1 slug fix. New features ship as **source**; the Cockpit rebuilds its UI bundle (`web/dist`) on first run, so an existing install picks the features up by pulling the new files, regenerating the mirror, and rebuilding/restarting (steps below).
