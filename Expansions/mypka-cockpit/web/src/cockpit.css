@@ -1,9 +1,12 @@
 /* ===========================================================================
    cockpit.css — the myPKA Cockpit shell + universal viewer + journal +
-   serendipity styles. GL-003 dark mode (canonical). Tokens only — every colour
-   is a var() from index.css; spacing follows the GL-003 §4 4px scale; type
-   follows the §3.2 scale. No hardcoded hex, no raw Tailwind palette colours.
-   "Calm operator, warm material." Brass on warm charcoal. ONE accent.
+   serendipity styles. GL-003 v4 "GRAPHITE" dark mode (canonical). Tokens only —
+   every colour is a var() from index.css; spacing follows the GL-003 §4 4px
+   scale; type follows the §3.2 scale. No hardcoded hex, no raw Tailwind palette
+   colours. "Calm operator, precise instrument." Brass on cool graphite. ONE
+   accent. Signature chrome: frosted glass nav/overlays (backdrop-blur), precise
+   1px gradient hairlines, faint top-lit card gradients, edge-fade on wide cards,
+   SPARING brass glow (one active element only).
    =========================================================================== */
 
 :root {
@@ -86,7 +89,12 @@
   height: 100vh;
   display: flex;
   flex-direction: column;
-  background: var(--surface-1);
+  /* Graphite: the nav sits deeper than the canvas, with a faint top-light wash
+     and a frosted backdrop. A cool near-black gradient floor → canvas. */
+  background:
+    linear-gradient(180deg, oklch(0.135 0.004 250) 0%, var(--surface-bg) 100%);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
   border-right: 1px solid var(--border);
   transition: margin-left 220ms cubic-bezier(0.22, 1, 0.36, 1);
   z-index: 40;
@@ -217,10 +225,15 @@
   outline: 2px solid var(--accent-brass);
   outline-offset: 2px;
 }
+/* Active nav row — the ONE prominent moment in the rail (Graphite §4.1): a faint
+   brass wash + a precise 2px brass left-edge marker. Glow stays reserved for the
+   primary button / hero (§1.10 sparing-glow discipline), so the active row points
+   with edge + tint, never a halo. */
 .menu-button[data-active='true'] {
   background: var(--accent-soft);
   color: var(--fg);
   font-weight: 460;
+  box-shadow: inset 2px 0 0 0 var(--accent-brass);
 }
 .menu-button[data-active='true'] .menu-icon { color: var(--accent-brass); }
 
@@ -1073,7 +1086,14 @@
   border-left: 3px solid var(--accent-brass); padding: 2px 0 2px 14px; margin: 0 0 1em;
   color: var(--fg); font-style: italic;
 }
-.note-prose hr { border: none; border-top: 1px solid var(--border-subtle); margin: 1.6em 0; }
+/* Graphite §4.6 divider — a thin gradient hairline that fades to transparent at
+   both ends, instead of a hard rule edge-to-edge. */
+.note-prose hr {
+  border: none;
+  height: 1px;
+  background: var(--grad-divider);
+  margin: 1.6em 0;
+}
 .note-prose a.ext-link { color: var(--accent-brass); text-decoration: none; }
 .note-prose a.ext-link:hover { text-decoration: underline; }
 .note-prose table {
@@ -1139,7 +1159,9 @@
 /* ---- Side panels (metadata / backlinks / outbound) ------------------------ */
 .note-side { display: flex; flex-direction: column; gap: 16px; }
 .side-panel {
-  border: 1px solid var(--border); border-radius: 8px; background: var(--surface-1); padding: 14px;
+  /* Graphite §4.4 card: faint top-lit gradient surface + 1px hairline. */
+  border: 1px solid var(--border); border-radius: 8px;
+  background: var(--grad-card); padding: 14px;
 }
 .side-panel-title {
   display: flex; align-items: center; gap: 6px; margin: 0 0 10px;
@@ -1323,11 +1345,16 @@
 
 .food-card {
   display: flex; flex-direction: column;
+  /* Graphite §4.4 card: faint top-lit gradient + hairline; hover lifts the edge
+     to border-strong + a -2px translate (no glow — glow is reserved, §1.10). */
   border: 1px solid var(--border); border-radius: 8px;
-  background: var(--surface-1); overflow: hidden;
-  transition: border-color 150ms ease;
+  background: var(--grad-card); overflow: hidden;
+  transition: border-color 150ms ease, transform 150ms cubic-bezier(0.16, 1, 0.3, 1);
 }
-.food-card:hover { border-color: var(--border); }
+.food-card:hover {
+  border-color: oklch(0.37 0.006 250); /* --border-strong: emphasized edge on hover */
+  transform: translateY(-2px);
+}
 
 .food-card-media { position: relative; }
 .food-photo {
@@ -3289,7 +3316,9 @@ body.chat-locked {
 .confirm-btn--ok {
   background: var(--accent-brass); color: var(--text-on-brass); border-color: var(--accent-brass);
 }
-.confirm-btn--ok:hover:not(:disabled) { filter: brightness(1.06); }
+/* Graphite §4.2 — the brass primary button gains a faint, color-matched glow on
+   hover (sparing: this is the ONE accent moment in a confirm dialog). */
+.confirm-btn--ok:hover:not(:disabled) { filter: brightness(1.06); box-shadow: var(--glow-signal); }
 .confirm-btn:focus-visible { outline: 2px solid var(--accent-brass); outline-offset: 2px; }
 
 .confirm-outcome {
@@ -4343,10 +4372,14 @@ body.chat-locked {
   display: flex; flex-direction: column;
   width: min(640px, 100%);
   max-height: min(70vh, 640px);
-  background: var(--surface-1);
-  border: 1px solid var(--border);
+  /* Graphite §4.1/§4.8 — the command/search surface is frosted glass: a
+     translucent fill over a backdrop blur, a glass hairline, premium shadow. */
+  background: var(--glass-fill);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--glass-border);
   border-radius: 14px;
-  box-shadow: 0 24px 60px oklch(0.1 0 0 / 0.5);
+  box-shadow: 0 24px 60px oklch(0.08 0.004 250 / 0.7);
   overflow: hidden;
   animation: artifact-modal-in 180ms cubic-bezier(0.22, 1, 0.36, 1);
 }
@@ -7126,3 +7159,101 @@ body.chat-locked {
   white-space: pre-wrap; overflow-wrap: break-word;
   max-height: 120px; overflow-y: auto;
 }
+
+/* ===========================================================================
+   GRAPHITE v4 — reusable signature-chrome utilities (Iris v4 DESIGN-LANGUAGE
+   §4.4–§4.6, §1.15, §1.17). Opt-in classes; tokens only. Add to any surface
+   that wants the wide-card edge-fade, a standalone gradient hairline divider,
+   a frosted glass panel, the blueprint dot-grid, or crosshair "+" corners.
+   =========================================================================== */
+
+/* §1.15 / §4.4 — wide cards, rows, logo strips and grid art that DISSOLVE at the
+   left + right edges into the canvas (a window onto something larger). */
+.graphite-edge-fade {
+  -webkit-mask-image: var(--mask-edge-fade);
+  mask-image: var(--mask-edge-fade);
+}
+
+/* §4.6 — standalone gradient-hairline divider (fades to transparent both ends).
+   Use as <div class="graphite-divider" /> between sections. The optional
+   centred mono micro-label rides on top via a masking chip. */
+.graphite-divider {
+  height: 1px;
+  border: none;
+  background: var(--grad-divider);
+  margin: 24px 0;
+}
+.graphite-divider--labelled {
+  display: flex; align-items: center; justify-content: center;
+  height: auto; background: none; position: relative;
+}
+.graphite-divider--labelled::before {
+  content: ''; position: absolute; left: 0; right: 0; top: 50%;
+  height: 1px; background: var(--grad-divider);
+}
+.graphite-divider-label {
+  position: relative; z-index: 1;
+  padding: 0 12px; background: var(--surface-bg);
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 0.75rem; text-transform: uppercase;
+  letter-spacing: var(--tracking-microlabel);
+  color: var(--fg-muted);
+}
+
+/* §3.3 — mono uppercase micro-label (section eyebrow, card category tag, stat
+   label). The connective tissue of the page. */
+.graphite-microlabel {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 0.75rem; text-transform: uppercase;
+  letter-spacing: var(--tracking-microlabel);
+  color: var(--fg-muted);
+}
+.graphite-microlabel--signal { color: var(--accent-brass); }
+
+/* §4.1 / §4.8 — frosted glass panel (banner, callout, floating chrome). Pairs
+   with --grad-signal-blob behind it where a soft brass glow should bleed
+   through the frost (the ONE content surface a colour gradient is allowed). */
+.graphite-glass {
+  background: var(--glass-fill);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+}
+
+/* §4.4 — the card surface: faint top-lit gradient + 1px hairline. Hover lifts
+   the edge to border-strong + a -2px translate. No glow (glow is reserved). */
+.graphite-card {
+  background: var(--grad-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  transition: border-color 150ms ease,
+    transform 220ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.graphite-card:hover {
+  border-color: oklch(0.37 0.006 250); /* --border-strong */
+  transform: translateY(-2px);
+}
+
+/* §4.4 hero card — the ONE card per region allowed a sparing brass edge glow. */
+.graphite-card--hero { box-shadow: var(--glow-signal); }
+
+/* §1.17 / §4.5 — blueprint framing: a faint dot grid + crosshair "+" corners,
+   "like a technical drawing". Spice, not base: at most one or two per view. */
+.graphite-blueprint {
+  position: relative;
+  background-image: var(--grid-dot);
+  background-size: var(--grid-dot-size);
+}
+.graphite-blueprint::before,
+.graphite-blueprint::after {
+  content: ''; position: absolute; width: 12px; height: 12px;
+  background-image:
+    linear-gradient(var(--grid-line), var(--grid-line)),
+    linear-gradient(var(--grid-line), var(--grid-line));
+  background-size: 100% 1px, 1px 100%;
+  background-position: center, center;
+  background-repeat: no-repeat;
+}
+.graphite-blueprint::before { top: -6px; left: -6px; }
+.graphite-blueprint::after { bottom: -6px; right: -6px; }

@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 The version in `expansion.yaml` is the single source of truth for a release; the
 root `package.json` and `package-lock.json` mirror it.
 
+## [1.2.0] - 2026-06-23
+
+### Changed
+
+- **Graphite reskin: the Cockpit's dark theme is retuned from warm charcoal to cool
+  graphite.** The default dark theme moves to a cool, near-black graphite canvas
+  (hue 250, near-zero chroma so it reads neutral, never pure black) with a cool
+  near-white text ramp, while **brass (`#C99A4F`) is retained as the single
+  signature accent**, recontextualised on the cool field. This is a pure visual
+  refresh delivered as two decoupled CSS files (`web/src/index.css` design-token
+  retune plus `web/src/cockpit.css` chrome). No behavior, data, API, or schema
+  changes; no new dependencies. Source of truth: Iris's GL-003 v4 "Graphite"
+  design language.
+
 ## [1.1.0] - 2026-06-22
 
 ### Added

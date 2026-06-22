@@ -3,8 +3,17 @@
 @tailwind utilities;
 
 /* ===========================================================================
-   GL-003 design tokens — dark mode (canonical / DEFAULT). OKLCH-canonical.
-   "Calm operator, warm material." Brass on warm charcoal. ONE accent.
+   GL-003 v4 "GRAPHITE" design tokens — dark mode (canonical / DEFAULT).
+   OKLCH-canonical. "Calm operator, precise instrument."
+
+   Cool graphite, near-black canvas (hue 250, near-zero chroma — reads neutral,
+   never pure black so hairlines + gradients have somewhere to sit). Cool
+   near-white text ramp (hue 250, not warm cream). BRASS (#C99A4F, hue 60) is
+   the single retained signature accent, recontextualised on the cool field —
+   the ONE colour that points. Every reference brand (Vercel/Linear blue,
+   Raycast red, Resend green) runs a cool/loud accent; brass-on-graphite is what
+   makes us unique while we adopt their structure. Source of truth:
+   /mypka-redesign/DESIGN-LANGUAGE.md + tokens.css (Iris, v4 Graphite).
 
    THEMING: the dark set is the default and is also bound to [data-theme="dark"].
    The light set ([data-theme="light"], far below) OVERRIDES only the colour
@@ -28,32 +37,56 @@
   --space-md: 16px;  /* base × 4 */
   --space-lg: 24px;  /* base × 6 */
 
-  /* Surface (the room) */
-  --surface-bg: oklch(0.21 0 0);
-  --surface-1: oklch(0.245 0 0);
-  --surface-2: oklch(0.285 0 0);
-  --surface-3: oklch(0.32 0 0);
-  --border: oklch(0.30 0 0);
-  --border-subtle: oklch(0.30 0 0 / 0.6);
+  /* Surface (the room) — cool graphite, near-black, NEVER pure black. Hue 250,
+     chroma 0.004 so it reads neutral. The ramp climbs: bg(canvas) → 1(raised)
+     → 2(raised-high) → 3. A faint extra step gives cards room to lift and edges
+     a hairline to live on. (Graphite §2.1.) */
+  --surface-bg: oklch(0.155 0.004 250);  /* #0B0B0D  page shell — the deepest plane */
+  --surface-1: oklch(0.195 0.004 250);   /* #131316  cards, panels, default elevated plane */
+  --surface-2: oklch(0.225 0.004 250);   /* #18181C  hover-elevated, active tab, segmented control */
+  --surface-3: oklch(0.255 0.004 250);   /* one step higher — popovers, nested raised chrome */
+  --border: oklch(0.30 0.005 250);       /* #2A2A2F  default 1px hairline (cool, low-chroma) */
+  --border-subtle: oklch(0.30 0.005 250 / 0.55); /* the quietest divider / list separator */
 
-  /* Foreground (the voice) — warm cream, aged paper */
-  --fg: oklch(0.88 0.022 71);
-  --fg-muted: oklch(0.66 0.016 71);
-  --fg-subtle: oklch(0.50 0.012 71);
+  /* Foreground (the voice) — cool near-white, NOT warm cream. Hue 250. */
+  --fg: oklch(0.97 0.003 250);           /* #F4F5F7  primary copy, headlines */
+  --fg-muted: oklch(0.66 0.005 250);     /* #8E9099  helper text, metadata, captions (AA on raised) */
+  --fg-subtle: oklch(0.50 0.005 250);    /* #696B73  disabled, placeholder, faded edge labels */
 
-  /* Accent — the singular brass spark, hue 60 */
-  --accent-brass: oklch(0.72 0.13 60);
-  --accent-deep: oklch(0.63 0.12 60);
-  --accent-soft: oklch(0.72 0.13 60 / 0.12);
-  --text-on-brass: oklch(0.18 0.010 60);
+  /* Accent — THE single signature "signal": brass (#C99A4F, hue 60), retained
+     and recontextualised on the cool graphite field. At most ONE prominent
+     moment per view. Text painted ON a brass fill is near-black (brass is a
+     light fill → near-black foreground for AAA contrast; never white-on-brass). */
+  --accent-brass: oklch(0.72 0.13 60);   /* #C99A4F  CTAs, active state, one called-out word */
+  --accent-deep: oklch(0.64 0.135 58);   /* #A07A3A  pressed / high-emphasis (deep brass) */
+  --accent-soft: oklch(0.72 0.13 60 / 0.14); /* tinted chip background behind signal text */
+  --text-on-brass: oklch(0.16 0.01 250); /* #0C0D10  near-black text on a brass fill (AAA) */
 
-  /* Theme-adaptive chrome tokens (root-caused the few hardcoded oklch literals
-     in cockpit.css so they flip with the theme). DARK values here; the light set
-     overrides them. */
-  --atmos-glow: oklch(0.25 0.012 71 / 0.55);          /* the warm upper-left lamp on body */
-  --topbar-bg: oklch(0.21 0 0 / 0.82);                /* sticky reopen-bar wash (blurred) */
-  --scrim: oklch(0.12 0 0 / 0.55);                    /* mobile drawer / sheet scrim */
-  --focus-ring: oklch(0.72 0.13 60 / 0.45);           /* the brass :focus-visible halo */
+  /* Theme-adaptive chrome tokens (root-cause the few oklch literals in
+     cockpit.css so they flip with the theme). DARK Graphite values here. */
+  --atmos-glow: oklch(0.22 0.006 250 / 0.85);         /* cool upper-light atmosphere on body (was warm lamp) */
+  --topbar-bg: oklch(0.20 0.004 250 / 0.55);          /* frosted sticky/reopen-bar wash (glass, blurred) */
+  --scrim: oklch(0.10 0.004 250 / 0.60);              /* mobile drawer / sheet scrim (cool, near-black) */
+  --focus-ring: oklch(0.72 0.13 60 / 0.70);           /* the brass :focus-visible halo (single signal stroke) */
+
+  /* --- Graphite glass + hairline + glow + grid (v4 signature chrome) ---------
+     Glassmorphism (backdrop-blur) on overlays/nav; a precise 1px gradient
+     hairline; sparing brass glow (ONE active element, never wallpaper); the
+     blueprint dot grid + crosshair colour; the wide-card edge-fade mask. Every
+     value matches /mypka-redesign/tokens.css §8–§11. */
+  --glass-fill: oklch(0.20 0.004 250 / 0.55);         /* frosted panel fill (nav, command palette, modals) */
+  --glass-border: oklch(0.55 0.01 250 / 0.16);        /* glass hairline — a touch brighter than --border */
+  --glass-blur: 16px;                                  /* backdrop-filter blur radius */
+  --hairline: oklch(0.30 0.005 250 / 0.55);           /* the quietest divider (alias of border @ 0.55) */
+  --grad-card: linear-gradient(180deg, oklch(0.22 0.005 250) 0%, var(--surface-1) 100%); /* faint top-light on a card */
+  --grad-divider: linear-gradient(90deg, transparent, var(--border), transparent); /* gradient hairline, fades both ends */
+  --grad-signal-blob: radial-gradient(60% 60% at 30% 20%, oklch(0.72 0.13 60 / 0.40) 0%, oklch(0.72 0.13 60 / 0) 70%); /* glass-banner blob */
+  --mask-edge-fade: linear-gradient(90deg, transparent 0%, #000 8%, #000 92%, transparent 100%); /* wide-card / row L+R dissolve */
+  --glow-signal: 0 0 1px oklch(0.72 0.13 60 / 0.5), 0 0 12px oklch(0.72 0.13 60 / 0.22), 0 0 40px oklch(0.72 0.13 60 / 0.10); /* sparing 3-layer brass glow — ONE element */
+  --grid-line: oklch(0.30 0.005 250 / 0.5);           /* blueprint hairline + crosshair "+" colour */
+  --grid-dot: radial-gradient(oklch(0.40 0.005 250 / 0.18) 1px, transparent 1px); /* faint blueprint dot grid */
+  --grid-dot-size: 28px 28px;
+  --tracking-microlabel: 0.16em;                       /* mono uppercase micro-label tracking */
 
   /* Category hue — oxblood. NOT a second BRAND accent (brass is alone) and NOT a
      status colour. This is a single CATEGORY hue, used ONLY to mark calendar
@@ -600,38 +633,50 @@
 :root[data-theme='light'] {
   color-scheme: light;
 
-  /* Surface (the room) — warm aged paper, layered by subtle lightness steps.
-     Inverted ramp: bg is the lightest, surfaces step DOWN as they lift toward
-     the viewer (the dark mode steps up). A whisper of warm chroma (hue 71) keeps
-     it "material", never clinical white. */
-  --surface-bg: oklch(0.965 0.004 83);
-  --surface-1: oklch(0.985 0.004 83);
-  --surface-2: oklch(0.935 0.006 83);
-  --surface-3: oklch(0.895 0.008 83);
-  --border: oklch(0.86 0.008 83);
-  --border-subtle: oklch(0.86 0.008 83 / 0.7);
+  /* Surface (the room) — cool light graphite (hue 250), the daylight inversion
+     of the dark Graphite field. Dark is the design target; light stays coherent
+     and cool-neutral, never clinical white, never warm paper. Inverted ramp: bg
+     is the lightest, surfaces step DOWN as they lift toward the viewer. */
+  --surface-bg: oklch(0.975 0.003 250);
+  --surface-1: oklch(0.992 0.003 250);
+  --surface-2: oklch(0.945 0.004 250);
+  --surface-3: oklch(0.905 0.005 250);
+  --border: oklch(0.86 0.005 250);
+  --border-subtle: oklch(0.86 0.005 250 / 0.7);
 
-  /* Foreground (the voice) — warm charcoal ink on paper. */
-  --fg: oklch(0.30 0.018 71);
-  --fg-muted: oklch(0.46 0.016 71);
-  --fg-subtle: oklch(0.53 0.012 71);  /* ≥4.5:1 on paper (AA for normal text) — a step darker than a naive inversion so hint/caption text clears AA, not just AA-large */
+  /* Foreground (the voice) — cool graphite ink on light graphite. */
+  --fg: oklch(0.26 0.006 250);
+  --fg-muted: oklch(0.46 0.005 250);
+  --fg-subtle: oklch(0.53 0.005 250);  /* ≥4.5:1 on bg (AA for normal text) */
 
-  /* Accent — the singular brass spark, hue 60. Pulled DOWN in lightness so brass
+  /* Accent — the brass signal, hue 60. Pulled DOWN in lightness so brass
      text/glyphs clear AA on the light ground; the soft wash is a touch stronger
-     so the faint brass tint is still perceptible over cream. --text-on-brass
-     flips to a near-white warm ink so labels on a brass fill stay legible. */
+     so the faint brass tint stays perceptible. --text-on-brass flips to a
+     near-white ink so labels on a brass fill stay legible. */
   --accent-brass: oklch(0.52 0.13 60);
   --accent-deep: oklch(0.46 0.12 60);
   --accent-soft: oklch(0.52 0.13 60 / 0.13);
-  --text-on-brass: oklch(0.98 0.01 83);
+  --text-on-brass: oklch(0.98 0.003 250);
 
-  /* Theme-adaptive chrome — light values. A faint warm glow, a translucent paper
-     top-bar, a softer (warm, not black) scrim, and a slightly stronger brass halo
-     so the focus ring stays visible against bright surfaces. */
-  --atmos-glow: oklch(0.78 0.03 71 / 0.50);
-  --topbar-bg: oklch(0.985 0.004 83 / 0.82);
-  --scrim: oklch(0.30 0.02 71 / 0.32);
+  /* Theme-adaptive chrome — light Graphite values. A faint cool glow, a
+     translucent frosted top-bar, a cool (not warm) scrim, and a stronger brass
+     halo so the focus ring stays visible against bright surfaces. */
+  --atmos-glow: oklch(0.86 0.006 250 / 0.55);
+  --topbar-bg: oklch(0.992 0.003 250 / 0.62);
+  --scrim: oklch(0.30 0.006 250 / 0.30);
   --focus-ring: oklch(0.52 0.13 60 / 0.55);
+
+  /* Graphite glass + hairline + glow + grid — light-mode overrides (the dark
+     :root defines the full set; here only the values that must flip for daylight). */
+  --glass-fill: oklch(0.99 0.003 250 / 0.62);
+  --glass-border: oklch(0.55 0.01 250 / 0.18);
+  --hairline: oklch(0.86 0.005 250 / 0.7);
+  --grad-card: linear-gradient(180deg, oklch(0.998 0.003 250) 0%, var(--surface-1) 100%);
+  --grad-divider: linear-gradient(90deg, transparent, var(--border), transparent);
+  --grad-signal-blob: radial-gradient(60% 60% at 30% 20%, oklch(0.52 0.13 60 / 0.30) 0%, oklch(0.52 0.13 60 / 0) 70%);
+  --glow-signal: 0 0 1px oklch(0.52 0.13 60 / 0.45), 0 0 12px oklch(0.52 0.13 60 / 0.18), 0 0 40px oklch(0.52 0.13 60 / 0.08);
+  --grid-line: oklch(0.86 0.005 250 / 0.7);
+  --grid-dot: radial-gradient(oklch(0.70 0.005 250 / 0.22) 1px, transparent 1px);
 
   /* Category hues — oxblood + teal + highlight, lightness-adjusted for paper. */
   --planner-event: oklch(0.45 0.10 25);
@@ -701,10 +746,12 @@ body {
   text-rendering: optimizeLegibility;
 }
 
-/* Atmospheric depth — never flat black. A single warm lamp upper-left. */
+/* Atmospheric depth — never flat black. Cool graphite light falling from the
+   top (Graphite §1.1 / --grad-atmosphere): brighter near-top, deepening toward
+   the canvas floor. Replaces the v3 warm upper-left lamp. */
 body {
   background:
-    radial-gradient(120% 80% at 12% 0%, var(--atmos-glow) 0%, transparent 55%),
+    radial-gradient(130% 90% at 50% -10%, var(--atmos-glow) 0%, transparent 50%),
     var(--surface-bg);
   min-height: 100vh;
 }
