@@ -2,6 +2,34 @@
 
 All notable changes to the myPKA scaffold are tracked here. Versions follow semver: MAJOR for breaking structural changes, MINOR for additions, PATCH for fixes.
 
+## [4.1.1] - 2026-06-23
+
+**Cockpit day-planner drag-and-drop fix (critical).** A patch release that ships a
+fixed bundled myPKA Cockpit. Two day-planner drag-and-drop defects are resolved: you
+can now drop a task before or after a calendar event in a day-half lane, and dragging
+an already-placed task up or down within the same column now lands and persists. This
+is a Cockpit fix only: there are no structural changes to the scaffold and no changes
+to your PKM, journals, tasks, or any of your own content.
+
+### Fixed
+
+- **Bundled Cockpit day-planner drag-and-drop fixed** (`Expansions/mypka-cockpit/`,
+  cockpit version `1.2.0` -> `1.2.1`). Unified events+tasks position space (drop a
+  task before/after an event) and direction-aware same-column reorder. Ships a new
+  migration `008-unified-position-space.sql` that applies automatically on the next
+  Cockpit boot via the planner's idempotent, append-only migration runner. No
+  behavior changes outside the planner; no new dependencies.
+- **Version mirrors bumped to `4.1.1`** (`manifest.json` is authoritative; `VERSION`
+  and `.scaffold-version` mirror it). The bundled Cockpit's `expansion_yaml_version`
+  in `manifest.json` is updated to `1.2.1` to match.
+
+### Notes
+
+- The Cockpit is a runtime Expansion and is updated on its own version, separate from
+  the scaffold version. The scaffold self-updater never overwrites Cockpit code; it
+  defers to the Cockpit's own update path. This release simply ships the newer Cockpit
+  inside the scaffold download.
+
 ## [4.1.0] - 2026-06-23
 
 **The Graphite Cockpit.** The bundled myPKA Cockpit gets a full visual redesign. Its default dark theme moves from a warm charcoal to a cool, near-black **Graphite** canvas, with a cool near-white text ramp and **brass retained as the single signature accent**. The result is a calmer, more precise instrument that keeps the one colour that points (brass) while adopting a quieter, more neutral field around it.

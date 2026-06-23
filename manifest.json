@@ -1,9 +1,9 @@
 {
   "_about": "This is the single source of truth (SSOT) for the myPKA scaffold version and for the framework/user-state seam. The scaffold version lives HERE, authoritatively. VERSION and .scaffold-version are kept for back-compat with older tooling, but they mirror this file; if they ever disagree, manifest.json wins. The framework_paths and user_state_paths blocks are machine-readable: the updater (scripts/update-scaffold.py) reads them to decide which files it MAY overwrite (framework, ours, upgradable) and which it must NEVER touch (user state, yours, sacred). Markdown is canonical; this JSON is the control plane that lets the folder update itself safely.",
 
-  "scaffold_version": "4.1.0",
+  "scaffold_version": "4.1.1",
   "released": "2026-06-23",
-  "from": "4.0.0",
+  "from": "4.1.0",
   "breaking": false,
 
   "version_files": {
@@ -61,7 +61,7 @@
       {
         "slug": "mypka-cockpit",
         "name": "myPKA Cockpit",
-        "expansion_yaml_version": "1.2.0",
+        "expansion_yaml_version": "1.2.1",
         "updater": "Expansions/mypka-cockpit/scripts/UPDATE-COCKPIT.md",
         "update_policy": "defer-to-expansion",
         "note": "Runtime Expansion. Has source code, an npm build, and its own SQLite migration lifecycle. The scaffold updater must NOT swap cockpit code. If the cockpit is behind its latest release, the scaffold updater only prints a notice and points the member at the cockpit updater."
@@ -95,12 +95,12 @@
   },
 
   "changes": {
-    "_about": "Per-path change record for THIS release (4.0.0 -> 4.1.0), so the updater can print a plain-English plan like 'N added, N changed, 0 of yours touched'. change_type is one of: added | changed | moved. Only framework_paths appear here; user-state never appears because the updater never touches it. NOTE: the headline of 4.1.0 is the Cockpit Graphite reskin, which lives entirely inside Expansions/mypka-cockpit/ (user-state). The scaffold updater does NOT ship that reskin; it is delivered by the cockpit's own defer-to-expansion updater. The framework-path changes below are only the version mirrors and the changelog.",
+    "_about": "Per-path change record for THIS release (4.1.0 -> 4.1.1), so the updater can print a plain-English plan like 'N added, N changed, 0 of yours touched'. change_type is one of: added | changed | moved. Only framework_paths appear here; user-state never appears because the updater never touches it. NOTE: the headline of 4.1.1 is a critical Cockpit day-planner drag-and-drop fix, which lives entirely inside Expansions/mypka-cockpit/ (user-state). The scaffold updater does NOT ship that fix; it is delivered by the cockpit's own defer-to-expansion updater. The framework-path changes below are only the version mirrors and the changelog.",
     "paths": [
-      { "path": "manifest.json", "change_type": "changed", "note": "scaffold_version 4.0.0 -> 4.1.0; cockpit expansion_yaml_version 1.1.0 -> 1.2.0." },
-      { "path": "VERSION", "change_type": "changed", "note": "4.0.0 -> 4.1.0 (mirror of manifest)." },
-      { "path": ".scaffold-version", "change_type": "changed", "note": "4.0.0 -> 4.1.0 (mirror of manifest)." },
-      { "path": "CHANGELOG.md", "change_type": "changed", "note": "Prepended the [4.1.0] entry (Cockpit Graphite redesign)." }
+      { "path": "manifest.json", "change_type": "changed", "note": "scaffold_version 4.1.0 -> 4.1.1; cockpit expansion_yaml_version 1.2.0 -> 1.2.1." },
+      { "path": "VERSION", "change_type": "changed", "note": "4.1.0 -> 4.1.1 (mirror of manifest)." },
+      { "path": ".scaffold-version", "change_type": "changed", "note": "4.1.0 -> 4.1.1 (mirror of manifest)." },
+      { "path": "CHANGELOG.md", "change_type": "changed", "note": "Prepended the [4.1.1] entry (Cockpit planner drag-and-drop fix)." }
     ]
   },
 
