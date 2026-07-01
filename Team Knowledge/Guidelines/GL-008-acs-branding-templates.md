@@ -35,7 +35,7 @@ These are the original binary Office files, moved as-is from `Team Inbox/` — n
 | 3 | `DOC Informativi_Guideline_interna ACS-ITA.dotm` | Internal informational-document template (Italian) — for ACS-facing documents meant for internal circulation (guidelines, internal memos, internal policy notes). |
 | 4 | `DOC Informativi_esterni ACS_ITA.dotm` | External informational-document template (Italian) — for ACS documents meant to leave the organization (client-facing or public informational content). |
 | 5 | `Slide presentazione ACS_2026.potm` | PowerPoint presentation template, dated 2026 — the general-purpose ACS presentation deck shell (title, section, content, closing slides). |
-| 6 | `Template_ACSOne_slide progetti.potm` | PowerPoint project-slide template under the "ACSOne" sub-brand/program — a single-slide format for presenting individual projects. |
+| 6 | `Template_ACSOne_slide progetti.potm` | PowerPoint project-slide template for "ACSOne," a product of ACS — a single-slide format for presenting individual projects. |
 
 *(File descriptions above are read from filenames only — the files themselves are binary Office templates and were not opened/parsed as text, per instruction. If any of these readings is wrong, correct it here and Iris will update.)*
 
@@ -49,9 +49,9 @@ This applies to Charta (structured visual deliverables), Larry (if producing an 
 
 ---
 
-## 5. Deliverable-type -> template mapping (inferred, needs confirmation)
+## 5. Deliverable-type -> template mapping (confirmed)
 
-The mapping below is Iris's best-judgment read of the six filenames. It has **not** been confirmed by Egon or by ACS. Treat every row as a proposal, not a locked rule, until confirmed — flag any correction back to Iris to update this table.
+Egon confirmed this mapping as correct on 2026-07-01, with no corrections to any of the six rows. It is now the locked rule for which template a given ACS deliverable type starts from — still update-able if ACS's actual usage patterns diverge later, but not a proposal to revisit by default.
 
 | Deliverable type | Start from | Why (inferred) |
 |---|---|---|
@@ -60,9 +60,9 @@ The mapping below is Iris's best-judgment read of the six filenames. It has **no
 | Internal ACS document — policy note, internal guideline, staff-facing informational doc | `DOC Informativi_Guideline_interna ACS-ITA.dotm` | Filename contains "interna" (internal). |
 | External/client-facing informational document — fact sheet, public notice, external memo | `DOC Informativi_esterni ACS_ITA.dotm` | Filename contains "esterni" (external). |
 | General client-facing or internal presentation deck | `Slide presentazione ACS_2026.potm` | Generic "presentazione" (presentation) naming, dated for current year — the default deck shell. |
-| Single-slide project summary / one-pager under the ACSOne program | `Template_ACSOne_slide progetti.potm` | Named specifically for "slide progetti" (project slides) under the ACSOne sub-brand. |
+| Single-slide project summary / one-pager for the ACSOne product | `Template_ACSOne_slide progetti.potm` | Named specifically for "slide progetti" (project slides), for ACSOne — confirmed by Egon as a product of ACS, not a sub-brand or project codename. |
 
-**Flag to Egon:** confirm (a) whether "ACSOne" is a distinct sub-brand/program of ACS or just a project codename, and (b) whether the 2026-dated presentation template (`Slide presentazione ACS_2026.potm`) needs to be swapped for a new year's version annually — if so, Iris should note an expected refresh cadence here.
+**Flag to Egon:** confirm whether the 2026-dated presentation template (`Slide presentazione ACS_2026.potm`) needs to be swapped for a new year's version annually — if so, Iris should note an expected refresh cadence here. (The prior open question about ACSOne's nature is resolved: confirmed as a product of ACS.)
 
 ---
 
