@@ -13,8 +13,10 @@ Filename pattern: `GL-NNN-<title>.md`.
 | GL-003 | [[GL-003-design-system]] | Design-system / visual-identity SSOT — color, type, spacing, voice tokens that Iris authors and Charta/Pixel/Vera read from. *(Designer Pack — preinstalled in v3.0.0)* |
 | GL-004 | [[GL-004-task-resource-linking]] | One-way Task → Resource linking rule, seven-array task frontmatter contract, `linked_deliverables` slug format, archive-on-close cascade. Read by [[SOP-create-task]], [[SOP-claim-task]], [[SOP-close-task]]. |
 | GL-005 | [[GL-005-llm-agnostic-portable-core]] | The portable-core boundary: harness-agnostic core (`PKM/`, `Team Knowledge/`, the body of every `Team/*/AGENTS.md`) vs the per-harness adapter layer (`.claude/`, future `.codex/`, `.cursor/`). No harness names, host tool names, slash-command-only triggers, or hardcoded models in the core. Enforced by the `agnosticism-audit` in `validation-script.sh`. |
+| GL-006 | [[GL-006-confidential-vendor-data-handling]] | Redaction-before-external-research discipline for confidential vendor/commercial data — the STOP rule, no-paste-into-shared-or-insecure-channels, access-controlled storage of unredacted originals. Shared by [[Team/Marlowe - Senior Procurement Agent/AGENTS]] and [[Team/Ansel - Senior IT Alliance Manager/AGENTS]]. |
+| GL-007 | [[GL-007-cost-tier-decision-framework]] | The four-tier rigor/escalation heuristic (mechanical, lookup, core analysis, high-stakes) for deciding how much scrutiny a task needs and when to loop in Egon for sign-off. Policy documentation only — no local-model hosting or multi-model routing implied. Shared by Marlowe and Ansel. |
 
-*Reserved:* none. Next free Guideline slot is GL-006.
+*Reserved:* none. Next free Guideline slot is GL-008.
 
 ## When to write a new Guideline
 

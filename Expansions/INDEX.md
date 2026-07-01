@@ -15,3 +15,5 @@ Regenerated: 2026-06-21T00:00:00Z · 3 expansions · 0 invalid · 0 incompatible
 > Larry rebuilds this file on every session boot from the contents of this folder.
 > See myicor.com/library for official Expansions or `Expansions/docs/expansion-spec.md` to author your own.
 > Install procedure: [[WS-003-install-an-expansion]].
+
+**Build status (2026-07-01 activation):** App Developer Pack and Designer Expansion Pack verified — all six agents live in `Team/` with `.claude/agents/` shims. myPKA Cockpit is **build-pending**: this machine has no Node.js or Python 3 on PATH, so `npm run install:all` / `npm run build` and the SQLite extension install could not run. No launcher was generated. Once Node.js v20+ and Python 3 (with pip) are installed, tell Larry "finish the Cockpit setup" to complete `INSTALL.md` Steps 3-6 (SQLite `--all` schema, build, launcher generation, health-check).

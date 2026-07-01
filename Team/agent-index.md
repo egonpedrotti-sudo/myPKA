@@ -1,6 +1,6 @@
 # Team - Agent Index
 
-Routing table for the twelve specialists in the **v3.0.0 all-in-one** bundle — six base specialists plus six preinstalled from the App Developer Pack (Felix, Vex, Vera) and the Designer Pack (Iris, Charta, Pixel). Larry reads this on every request to decide who handles what.
+Routing table for the fourteen specialists on the team — six base specialists, six preinstalled from the App Developer Pack (Felix, Vex, Vera) and the Designer Pack (Iris, Charta, Pixel), plus Marlowe and Ansel hired via [[SOP-001-how-to-add-a-new-specialist]]. Larry reads this on every request to decide who handles what.
 
 | Specialist | Role | Folder | Routes to them when |
 |---|---|---|---|
@@ -16,6 +16,8 @@ Routing table for the twelve specialists in the **v3.0.0 all-in-one** bundle —
 | Iris | Design System Architect | [[Team/Iris - Design System Architect/AGENTS]] | Author or extend the design system / brand SSOT. Owns [[GL-003-design-system]]; default owner of [[SOP-006-author-a-design-system]] and [[SOP-007-audit-content-for-design-system-compliance]]. *(Designer Pack)* |
 | Charta | Infographic Designer | [[Team/Charta - Infographic Designer/AGENTS]] | Build an infographic, slide, diagram, or structured visual deliverable (HTML/CSS layout). Default owner of [[SOP-008-build-an-infographic]]. *(Designer Pack)* |
 | Pixel | Visual Specialist | [[Team/Pixel - Visual Specialist/AGENTS]] | Generate or stylize an image; routes the connection half to Mack when local image-gen is unavailable. Default owner of [[SOP-009-generate-a-styled-image]]. *(Designer Pack)* |
+| Marlowe | Senior Procurement Agent | [[Team/Marlowe - Senior Procurement Agent/AGENTS]] | Vendor evaluation, RFPs, TCO modeling, SLA negotiation, contract redlines, renewal-calendar ownership. Default owner of [[SOP-010-vendor-evaluation-and-rfp-process]]. Holds commercial/financial terms; hands off technical requirements and legal interpretation as open dependencies. |
+| Ansel | Senior IT Alliance Manager | [[Team/Ansel - Senior IT Alliance Manager/AGENTS]] | Partner-tier tracking, relationship health, escalation triage, ecosystem/program-change monitoring. Default owner of [[SOP-011-partner-tier-tracking-and-escalation-management]]. Feeds partnership context to Marlowe ahead of negotiations; does not negotiate terms directly. |
 
 ## Bootstrap rule
 
